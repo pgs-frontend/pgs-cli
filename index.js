@@ -2,7 +2,7 @@
 
 import { program } from "commander";
 import config from "./config.js";
-import { createAction, helpAction, versionAction, exitAction, defaultAction, intoTemplate } from "./constroller.js";
+import { helpAction, versionAction, exitAction, defaultAction, intoTemplate, unknownCommandAction, createTemplateAction } from "./constroller.js";
 
 intoTemplate();
 
@@ -19,11 +19,15 @@ program
 
 program
 .command(config.commands.create)
-.action(createAction);
+.option('-c, --template <type>', 'Specify a project template (e.g., basic)')
+.action(createTemplateAction);
+
 
 program
 .command(config.commands.exit)
 .action(exitAction);
 
+program
+.on('command:*', unknownCommandAction);
 
 program.parse(process.argv);

@@ -2,6 +2,7 @@ import config from "./config.js";
 import { select } from '@inquirer/prompts';
 import chalk from "chalk";
 import figlet from "figlet";
+import ora from "ora";
 
 const intoTemplate = ()=> {
     console.log(
@@ -36,14 +37,42 @@ const exitAction = () => {
     process.exit(0);
 }
 
-const createAction = async () => {
-    const answer = await select({
-        message: 'Select a template to create:',
-        choices: config.templates,
-    });
-    
-    console.log(chalk.green(`Creating ${answer} template...`));
-}
+const createTemplateAction = async (options) => {
+    try{
+
+        if(options.template){
+            const spinner = ora(`Verifying template...`).start();
+
+            const template = config.templates.find(template => template.value === options.template);
+
+            if(template){
+                spinner.succeed(chalk.green("Template Verified!"));
+                console.log(chalk.green(`${template.name} template verified successfully!`));
+            }else{
+                spinner.fail(chalk.red("Template not found!"));
+                process.exit(1);
+            }
+
+        }else{
+            const templates = await select({
+                message: 'Select a template to create:',
+                choices: config.templates,
+            }).then((answer) => {
+                const spinner = ora(`Creating ${answer} template...`).start();
+                setTimeout(() => {
+                    spinner.succeed(chalk.green("Template Selected!"));
+                    console.log(chalk.green(`${answer} template created successfully!`));
+                }, 1000);
+            });
+        }
+
+  
+    } catch (error) {
+        console.log(error)
+        console.error(chalk.red('Error: Unknown command. Use --help for usage.'));
+        process.exit(1);
+    }
+ }
 
 const helpAction = () => config.help();
 
@@ -51,4 +80,9 @@ const versionAction = () => {
     console.log(config.version);
 }
 
-export { createAction, helpAction, versionAction, exitAction, defaultAction, intoTemplate };
+const unknownCommandAction = () => {
+    console.error(chalk.red('Error: Unknown command. Use --help for usage.'));
+    process.exit(1);
+}
+
+export { helpAction, versionAction, exitAction, defaultAction, intoTemplate, unknownCommandAction, createTemplateAction };

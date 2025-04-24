@@ -51,6 +51,7 @@ const config = {
         version: '--v' || '-v' || '-version',
         listTemplates: '--ps' || '-ps' || '-list-templates',
         create: 'create',
+        createTemplate: 'template <template>',
         delete: 'delete',
         exit: 'exit',
     }

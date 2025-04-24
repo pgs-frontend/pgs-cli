@@ -1,5 +1,4 @@
-# PGS CLI 2025 🚀
-# Version 1.0.0 
+# PGS CLI 2025  | V 1.0.0 🚀
 
 A powerful Command Line Interface (CLI) tool for generating and managing project templates.
 
@@ -12,3 +11,4 @@ A powerful Command Line Interface (CLI) tool for generating and managing project
 - 🛠️ Developer-friendly tools
 
 ## Installation
+
